@@ -936,7 +936,10 @@ class DatasetFromDocuments:
                 logger.warning(f"""
                                raw string repr of item: {str(result[key])}\n
                                dty_descr:{dty.descr}\n
-                               numpy_arr:{arr}\n
+                               shape:{arr.shape}\n
+                               expected_shape:{str(expected_shape)}
+                               key: {key}     
+
 """)
                 if expected_shape and (not is_external):
                     validated_column = list(
