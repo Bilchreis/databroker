@@ -929,10 +929,20 @@ class DatasetFromDocuments:
             for key, expected_shape, is_external in zip(
                 keys, expected_shapes, is_externals
             ):
+                arr = numpy.asarray(result[key])
+                dty = arr.dtype
+
+                
+                logger.warning(f"""
+                               raw string repr of item: {str(result[key])}\n
+                               dty_descr:{dty.descr}\n
+                               numpy_arr:{arr}\n
+""")
                 if expected_shape and (not is_external):
                     validated_column = list(
                         map(
-                            lambda item: self.validate_shape(
+                            lambda item: 
+                            self.validate_shape(
                                 key, numpy.asarray(item), expected_shape
                             ) if 'uid' in inspect.signature(self.validate_shape).parameters
                             else self.validate_shape(
