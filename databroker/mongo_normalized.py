@@ -929,18 +929,6 @@ class DatasetFromDocuments:
             for key, expected_shape, is_external in zip(
                 keys, expected_shapes, is_externals
             ):
-                arr = numpy.asarray(result[key])
-                dty = arr.dtype
-
-                
-                logger.warning(f"""
-                               raw string repr of item: {str(result[key])}\n
-                               dty_descr:{dty.descr}\n
-                               shape:{arr.shape}\n
-                               expected_shape:{str(expected_shape)}
-                               key: {key}     
-
-""")
                 if expected_shape and (not is_external):
                     validated_column = list(
                         map(
@@ -2232,6 +2220,15 @@ def default_validate_shape(key, data, expected_shape, uid=None):
     * If some dimensions are smaller than expected,, pad "right" edge of each
       dimension that falls short with zeros.
     """
+    logger.warning(f"""
+                    raw string repr of item: {str(data)}\n
+                    dty_descr:{data.descr}\n
+                    shape:{data.shape}\n
+                    expected_shape:{str(expected_shape)}
+                    key: {key}     
+
+""")
+
     MAX_SIZE_DIFF = 2
     if data.shape == expected_shape:
         return data
