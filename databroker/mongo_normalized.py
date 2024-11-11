@@ -932,7 +932,8 @@ class DatasetFromDocuments:
                 if expected_shape and (not is_external):
                     
                     numpy_dtype = numpy.dtype([tuple(field) for field in data_key['dtype_descr']]) if data_key['dtype_descr'] else None
-
+                    logger.warning(f"numpy_dtype: {numpy_dtype}")
+                    logger.warning(f"data_key: {data_key}")
 
                     validated_column = list(
                         map(
