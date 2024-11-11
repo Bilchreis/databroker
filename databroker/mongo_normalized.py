@@ -1080,6 +1080,7 @@ def build_config_xarray(
                     "We do not yet support general structured arrays, only 1D ones."
                 )
             numpy_dtype = dtype.to_numpy_dtype()
+            logger.warning(f"numpy_dtype:{numpy_dtype}")
         # if we have a detailed string, trust that
         elif dt_np is not None:
             numpy_dtype = numpy.dtype(dt_np)
@@ -1088,6 +1089,8 @@ def build_config_xarray(
             numpy_dtype = JSON_DTYPE_TO_MACHINE_DATA_TYPE[
                 field_metadata["dtype"]
             ].to_numpy_dtype()
+        logger.warning(f"numpy_dtype:{numpy_dtype}")
+        logger.warning(f"collumn:{column}")
         columns[key] = numpy.array(column, dtype=numpy_dtype)
     data_arrays = {}
     dim_counter = itertools.count()
