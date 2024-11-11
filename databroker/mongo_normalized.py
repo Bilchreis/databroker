@@ -934,10 +934,10 @@ class DatasetFromDocuments:
                         map(
                             lambda item: 
                             self.validate_shape(
-                                key, numpy.asarray(item), expected_shape
+                                key, numpy.asarray(item,dtype= data_key.get('dtype_descr',None)), expected_shape
                             ) if 'uid' in inspect.signature(self.validate_shape).parameters
                             else self.validate_shape(
-                                key, numpy.asarray(item), expected_shape, uid=self._run.metadata()['start']['uid']
+                                key, numpy.asarray(item,dtype= data_key.get('dtype_descr',None)), expected_shape, uid=self._run.metadata()['start']['uid']
                             ),
                             result[key],
                         )
