@@ -931,7 +931,7 @@ class DatasetFromDocuments:
             ):
                 if expected_shape and (not is_external):
                     
-                    def to_list_of_tuples(list_of_lists:list[list]):
+                    def to_list_of_tuples(list_of_lists):
                         return [tuple(field) for field in list_of_lists]
 
 
