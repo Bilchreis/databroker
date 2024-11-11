@@ -2222,8 +2222,8 @@ def default_validate_shape(key, data, expected_shape, uid=None):
     """
     logger.warning(f"""
                     raw string repr of item: {str(data)}\n
-                    dty_descr:{data.descr}\n
-                    shape:{data.shape}\n
+                    dty_descr:{data.dtype.descr}\n
+                    shape:{data.dtype.shape}\n
                     expected_shape:{str(expected_shape)}
                     key: {key}     
 
