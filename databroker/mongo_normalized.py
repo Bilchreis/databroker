@@ -926,8 +926,8 @@ class DatasetFromDocuments:
                 ]
             )
             (result,) = cursor
-            for key, expected_shape, is_external in zip(
-                keys, expected_shapes, is_externals
+            for key, expected_shape, is_external, data_key in zip(
+                keys, expected_shapes, is_externals, data_keys
             ):
                 if expected_shape and (not is_external):
                     
