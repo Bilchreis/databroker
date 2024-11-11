@@ -931,18 +931,22 @@ class DatasetFromDocuments:
             ):
                 if expected_shape and (not is_external):
                     
-                    numpy_dtype = numpy.dtype([tuple(field) for field in data_key['dtype_descr']]) if data_key['dtype_descr'] else None
+                    def to_list_of_tuples(list_of_lists:list[list]):
+                        return [tuple(field) for field in list_of_lists]
+
+
+                    numpy_dtype = numpy.dtype(to_list_of_tuples(data_key['dtype_descr'])) if data_key['dtype_descr'] else None
                     logger.warning(f"numpy_dtype: {numpy_dtype}")
                     logger.warning(f"data_key: {data_key}")
 
                     validated_column = list(
                         map(
-                            lambda item: 
+                            lambda item:
                             self.validate_shape(
-                                key, numpy.asarray(item,dtype= numpy_dtype), expected_shape
+                                key, numpy.asarray(to_list_of_tuples(item) if numpy_dtype else item,dtype= numpy_dtype), expected_shape
                             ) if 'uid' in inspect.signature(self.validate_shape).parameters
                             else self.validate_shape(
-                                key, numpy.asarray(item,dtype= numpy_dtype), expected_shape, uid=self._run.metadata()['start']['uid']
+                                key, numpy.asarray(to_list_of_tuples(item) if numpy_dtype else item,dtype= numpy_dtype), expected_shape, uid=self._run.metadata()['start']['uid']
                             ),
                             result[key],
                         )
