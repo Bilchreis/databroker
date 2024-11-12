@@ -107,7 +107,7 @@ def structure_from_descriptor(descriptor, sub_dict, max_seq_num, unicode_columns
     if unicode_columns is None:
         unicode_columns = {}
     dim_counter = itertools.count()
-    stru    ctures = {"time": time_variable}
+    structures = {"time": time_variable}
     metadata = {"time": {"attrs": {}}}
 
     for key, field_metadata in descriptor["data_keys"].items():
