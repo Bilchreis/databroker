@@ -107,7 +107,7 @@ def structure_from_descriptor(descriptor, sub_dict, max_seq_num, unicode_columns
     if unicode_columns is None:
         unicode_columns = {}
     dim_counter = itertools.count()
-    structures = {"time": time_variable}
+    stru    ctures = {"time": time_variable}
     metadata = {"time": {"attrs": {}}}
 
     for key, field_metadata in descriptor["data_keys"].items():
@@ -934,10 +934,7 @@ class DatasetFromDocuments:
                     def to_list_of_tuples(list_of_lists):
                         return [tuple(field) for field in list_of_lists]
 
-
                     numpy_dtype = numpy.dtype(to_list_of_tuples(data_key['dtype_descr'])) if data_key['dtype_descr'] else None
-                    logger.warning(f"numpy_dtype: {numpy_dtype}")
-                    logger.warning(f"data_key: {data_key}")
 
                     validated_column = list(
                         map(
@@ -1091,7 +1088,7 @@ def build_config_xarray(
             ].to_numpy_dtype()
         logger.warning(f"numpy_dtype:{numpy_dtype}")
         logger.warning(f"collumn:{column}")
-        if dtype:
+        if field_metadata.get('dtype_descr'):
             column =  [[tuple (field) for field in elem] for elem in column]            
         columns[key] = numpy.array(column, dtype=numpy_dtype)
     data_arrays = {}
