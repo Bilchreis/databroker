@@ -1089,7 +1089,10 @@ def build_config_xarray(
         logger.warning(f"numpy_dtype:{numpy_dtype}")
         logger.warning(f"collumn:{column}")
         if field_metadata.get('dtype_descr'):
-            column =  [[tuple (field) for field in elem] for elem in column]            
+            if field_metadata.get('shape'):
+                column =  [[tuple (field) for field in elem] for elem in column]
+            else:
+                column =  [tuple (field) for field in column]             
         columns[key] = numpy.array(column, dtype=numpy_dtype)
     data_arrays = {}
     dim_counter = itertools.count()
