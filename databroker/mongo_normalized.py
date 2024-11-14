@@ -854,9 +854,10 @@ class DatasetFromDocuments:
             max_seq_num = 1 + slice_.stop
 
         to_stack = self._inner_get_columns(tuple(keys), min_seq_num, max_seq_num)
-
+        logger.warning(f"to_stack:{to_stack}")
         result = {}
         for key, value in to_stack.items():
+            logger.warning(f"to_stack:{value}")
             array = numpy.stack(value)
             if slices:
                 sliced_array = array[(..., *slices[1:])]
