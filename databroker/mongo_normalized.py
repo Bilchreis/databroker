@@ -77,7 +77,8 @@ def _try_descr(field_metadata):
     if descr:
         if len(descr) == 1 and descr[0][0] == "":
             return None
-        dtype = StructDtype.from_numpy_dtype(numpy.dtype(descr))
+        numpy_dtype = numpy.dtype([tuple(field) for field in descr])
+        dtype = StructDtype.from_numpy_dtype(numpy_dtype)
         if dtype.max_depth() > 1:
             raise RuntimeError(
                 "We can not yet cope with multiple nested structured dtypes.  "
@@ -925,17 +926,24 @@ class DatasetFromDocuments:
                 ]
             )
             (result,) = cursor
-            for key, expected_shape, is_external in zip(
-                keys, expected_shapes, is_externals
+            for key, expected_shape, is_external, data_key in zip(
+                keys, expected_shapes, is_externals, data_keys
             ):
                 if expected_shape and (not is_external):
+
+                    def to_list_of_tuples(list_of_lists):
+                        return [tuple(field) for field in list_of_lists]
+                    
+                    numpy_dtype = numpy.dtype(to_list_of_tuples(data_key['dtype_descr'])) if data_key['dtype_descr'] else None
+                    
                     validated_column = list(
                         map(
-                            lambda item: self.validate_shape(
-                                key, numpy.asarray(item), expected_shape
+                            lambda item:
+                            self.validate_shape(
+                                key, numpy.asarray(to_list_of_tuples(item) if numpy_dtype else item,dtype= numpy_dtype), expected_shape
                             ) if 'uid' in inspect.signature(self.validate_shape).parameters
                             else self.validate_shape(
-                                key, numpy.asarray(item), expected_shape, uid=self._run.metadata()['start']['uid']
+                                key, numpy.asarray(to_list_of_tuples(item) if numpy_dtype else item,dtype= numpy_dtype), expected_shape, uid=self._run.metadata()['start']['uid']
                             ),
                             result[key],
                         )
@@ -1077,6 +1085,13 @@ def build_config_xarray(
             numpy_dtype = JSON_DTYPE_TO_MACHINE_DATA_TYPE[
                 field_metadata["dtype"]
             ].to_numpy_dtype()
+        # if we have a structured array 
+        if dtype: 
+            # the inner most lists need to be turned into tuples 
+            if field_metadata.get('shape'):
+                column =  [[tuple (field) for field in elem] for elem in column]
+            else:
+                column =  [tuple (field) for field in column]   
         columns[key] = numpy.array(column, dtype=numpy_dtype)
     data_arrays = {}
     dim_counter = itertools.count()
