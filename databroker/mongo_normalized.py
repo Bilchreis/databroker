@@ -943,7 +943,7 @@ class DatasetFromDocuments:
                     def to_list_of_tuples(list_of_lists):
                         return [tuple(field) for field in list_of_lists]
 
-                    numpy_dtype = numpy.dtype(to_list_of_tuples(data_key['dtype_descr'])) if data_key['dtype_descr'] else None
+                    numpy_dtype = numpy.dtype(to_list_of_tuples(data_key['dtype_descr'])) if data_key.get('dtype_descr') else None
 
                     validated_column = list(
                         map(
@@ -1045,7 +1045,7 @@ class DatasetFromDocuments:
                 def to_list_of_tuples(list_of_lists):
                     return [tuple(field) for field in list_of_lists]
 
-                numpy_dtype = numpy.dtype(to_list_of_tuples(data_key['dtype_descr'])) if data_key['dtype_descr'] else None
+                numpy_dtype = numpy.dtype(to_list_of_tuples(data_key['dtype_descr'])) if data_key.get('dtype_descr') else None
 
                 if data_key.get('dtype_descr'):
                     if data_key.get('shape'):
