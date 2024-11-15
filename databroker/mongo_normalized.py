@@ -861,7 +861,7 @@ class DatasetFromDocuments:
 
         result = {}
         for key, value in to_stack.items():
-            
+            logger.warning(f"value_dtype:{value.dtype}")
             array = numpy.stack(value)
             if slices:
                 sliced_array = array[(..., *slices[1:])]
@@ -869,7 +869,7 @@ class DatasetFromDocuments:
                 sliced_array = array
             result[key] = sliced_array
 
-        logger.warning(f"result:{result}")
+        
         return result
 
     def _inner_get_columns(self, keys, min_seq_num, max_seq_num):
