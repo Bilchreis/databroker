@@ -1050,8 +1050,8 @@ class DatasetFromDocuments:
                 if data_key.get('dtype_descr'):
                     if data_key.get('shape'):
                         column =  [[tuple (field) for field in elem] for elem in column]
-                else:
-                    column =  [tuple (field) for field in column]   
+                    else:
+                        column =  [tuple (field) for field in column]   
                 logger.warning(f"numpy_dtype:{numpy_dtype}")      
                 logger.warning(f"column:{column}")      
                 column = numpy.array(column, dtype=numpy_dtype)
