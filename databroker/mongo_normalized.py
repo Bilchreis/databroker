@@ -861,7 +861,7 @@ class DatasetFromDocuments:
 
         result = {}
         for key, value in to_stack.items():
-            logger.warning(f"value:{value}\nkey:{key}")
+            logger.warning(f"value:{value}\nkey:{key}\n")
             array = numpy.stack(value)
             if slices:
                 sliced_array = array[(..., *slices[1:])]
@@ -1043,13 +1043,13 @@ class DatasetFromDocuments:
                     return [tuple(field) for field in list_of_lists]
 
                 numpy_dtype = numpy.dtype(to_list_of_tuples(data_key['dtype_descr'])) if data_key['dtype_descr'] else None
-                
+
                 if data_key.get('dtype_descr'):
                     if data_key.get('shape'):
                         column =  [[tuple (field) for field in elem] for elem in column]
                 else:
                     column =  [tuple (field) for field in column]             
-                columns[key] = numpy.array(column, dtype=numpy_dtype)
+                column = numpy.array(column, dtype=numpy_dtype)
                 to_stack[key].extend(column)
 
         return to_stack
