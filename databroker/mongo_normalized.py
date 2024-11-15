@@ -764,7 +764,7 @@ class DatasetFromDocuments:
         slices = [s[index] for s, index in zip(slices_for_chunks, block)]
         raw_array = self.get_columns([variable], slices=slices)[variable]
         logger.warning(f"""
-        raw_array:{raw_array}\n
+        raw_array_dtype: {raw_array.dtype}\n
         dtype:{dtype}""")
 
         if raw_array.dtype != dtype:
