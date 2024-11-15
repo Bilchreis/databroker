@@ -77,6 +77,7 @@ def _try_descr(field_metadata):
     if descr:
         if len(descr) == 1 and descr[0][0] == "":
             return None
+        logger.warning(f'descr:{descr}')
         numpy_dtype = numpy.dtype([tuple(field) for field in descr])
         dtype = StructDtype.from_numpy_dtype(numpy_dtype)
         if dtype.max_depth() > 1:
