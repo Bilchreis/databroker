@@ -1009,8 +1009,8 @@ class DatasetFromDocuments:
         # Any arbitrary valid descriptor uid will work; we just need to satisfy
         # the Filler with our mocked Event below. So we pick the first one.
         descriptor_uid = descriptor_uids[0]
-        for key, expected_shape, is_external in zip(
-            keys, expected_shapes, is_externals
+        for key, expected_shape, is_external, data_key in zip(
+            keys, expected_shapes, is_externals, data_keys
         ):
             column = columns[key]
             if is_external:
@@ -1039,6 +1039,17 @@ class DatasetFromDocuments:
                     filled_column.append(validated_filled_data)
                 to_stack[key].extend(filled_column)
             else:
+                def to_list_of_tuples(list_of_lists):
+                    return [tuple(field) for field in list_of_lists]
+
+                numpy_dtype = numpy.dtype(to_list_of_tuples(data_key['dtype_descr'])) if data_key['dtype_descr'] else None
+                
+                if data_key.get('dtype_descr'):
+                    if data_key.get('shape'):
+                        column =  [[tuple (field) for field in elem] for elem in column]
+                else:
+                    column =  [tuple (field) for field in column]             
+                columns[key] = numpy.array(column, dtype=numpy_dtype)
                 to_stack[key].extend(column)
 
         return to_stack
