@@ -861,7 +861,7 @@ class DatasetFromDocuments:
 
         result = {}
         for key, value in to_stack.items():
-            logger.warning(f"value_dtype:{value.dtype}")
+            logger.warning(f"value:{value}\nkey:{key}")
             array = numpy.stack(value)
             if slices:
                 sliced_array = array[(..., *slices[1:])]
